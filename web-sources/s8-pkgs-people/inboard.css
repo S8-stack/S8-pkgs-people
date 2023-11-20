@@ -1,0 +1,103 @@
+*, *:before, *:after {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+
+
+.inboard-box {
+	background: #222;
+	margin: 0rem;
+	/*min-height: 100vh; */
+	font-family: Futura, sans-serif;
+
+	width: 420px;
+	background-color: rgba(255, 255, 255, 0.03);
+	position: absolute;
+	transform: translate(-50%, -50%);
+	top: 50%;
+	left: 50%;
+	border-radius: 10px;
+	backdrop-filter: blur(8px);
+	border: 2px solid rgba(255, 255, 255, 0.1);
+	box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+	padding: 50px 35px;
+	z-index: 4;
+}
+
+.inboard-box * {
+	font-family: "Poppins", sans-serif;
+	color: #ffffff;
+	letter-spacing: 0.5px;
+	outline: none;
+	border: none;
+	z-index: 1;
+}
+
+.inboard-box h1 {
+	font-size: 32px;
+	font-weight: 700;
+	text-align: center;
+	color: #fff;
+	opacity: 0.9;
+}
+
+.inboard-box h3 {
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 42px;
+	text-align: center;
+}
+
+.inboard-box label {
+	display: block;
+	margin-top: 30px;
+	font-size: 16px;
+	font-weight: 500;
+}
+
+.inboard-box input {
+	display: block;
+	height: 50px;
+	width: 100%;
+	background-color: rgba(255, 255, 255, 0.05);
+	border-radius: 3px;
+	padding: 0 10px;
+	margin-top: 8px;
+	font-family: Arial, HelveticaNeue;
+	font-size: 16px;
+	font-weight: normal;
+}
+
+.inboard-box ::placeholder {
+	color: #8f8e8e;
+}
+
+.inboard-box input:hover {
+	outline: 2px solid rgba(2, 214, 30, 0.759);
+}
+
+.inboard-box button {
+	margin-top: 50px;
+	width: 100%;
+	background-color: rgb(45, 164, 78);
+	color: rgb(182, 233, 220);
+	padding: 15px 0;
+	font-size: 18px;
+	font-weight: 600;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.inboard-box button:hover {
+	background-color: rgb(47, 173, 83);
+	color: rgb(220, 238, 177);
+}
+
+@media only screen and (max-width: 600px) {
+	body {
+		background:
+			url(https://source.unsplash.com/1080x2400?sunset+birdeye+ocean);
+	}
+}

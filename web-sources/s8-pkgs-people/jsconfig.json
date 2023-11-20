@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "/s8-core-io-bytes/*": [ "../../../com.s8.core.io.bytes/web-sources/s8-io-bytes/*" ],
+      "/s8-core-io-bohr-neon/*": [ "../../../com.s8.core.io.bohr.neon/web-sources/s8-core-io-bohr-neon/*" ],
+      "/s8-pkgs-ui-carbide/*": [ "../../../com.s8.pkgs.ui.carbide/web-sources/s8-pkgs-ui-carbide/*" ],
+      "/s8-pkgs-people/*": [ "./*" ]
+    }
+  }
+}
