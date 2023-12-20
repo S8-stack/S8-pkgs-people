@@ -6,7 +6,7 @@ import com.s8.api.web.functions.arrays.StringUTF8ArrayNeFunction;
 
 
 /**
- * 
+ * Inboard box
  */
 public class InboardBox extends S8WebFrontObject {
 
