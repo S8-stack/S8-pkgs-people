@@ -16,7 +16,7 @@ public class DynamicMeshBackground extends S8WebFrontObject {
 	 * @param typeName
 	 */
 	public DynamicMeshBackground(S8WebFront front) {
-		super(front, "/s8-pkgs-people/DynamicMeshBackground");
+		super(front, "/S8-pkgs-people/DynamicMeshBackground");
 	}
 	
 	

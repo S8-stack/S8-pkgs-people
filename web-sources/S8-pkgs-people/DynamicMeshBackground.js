@@ -1,12 +1,12 @@
-import { NeObject } from "/s8-core-io-bohr-neon/NeObject.js";
+import { NeObject } from "/S8-core-bohr-neon/NeObject.js";
 
-import { S8WebFront } from "/s8-pkgs-ui-carbide/S8WebFront.js";
+import { S8WebFront } from "/S8-pkgs-ui-carbide/S8WebFront.js";
 
 
 /**
  * 
  */
-S8WebFront.CSS_import('/s8-pkgs-people/DynamicMeshBackground.css');
+S8WebFront.CSS_import('/S8-pkgs-people/DynamicMeshBackground.css');
 
 /**
  * 

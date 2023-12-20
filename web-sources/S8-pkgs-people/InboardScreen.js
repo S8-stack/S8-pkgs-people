@@ -1,5 +1,5 @@
 
-import { NeObject } from '/s8-core-io-bohr-neon/NeObject.js';
+import { NeObject } from '/S8-core-bohr-neon/NeObject.js';
 
 
 export class InboardScreen extends NeObject {
