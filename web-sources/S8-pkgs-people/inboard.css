@@ -1,4 +1,6 @@
-*, *:before, *:after {
+*,
+*:before,
+*:after {
 	padding: 0;
 	margin: 0;
 	box-sizing: border-box;
@@ -27,15 +29,64 @@
 }
 
 .inboard-box * {
+
+	z-index: 1;
+}
+
+
+.inboard-container-visible {
+	display: block;
+	animation-duration: 0.5s;
+	animation-name: animate-expand;
+	animation-direction: normal;
+	animation-timing-function: cubic-bezier(.26, .53, .74, 1.48);
+}
+
+.inboard-container-hidden {
+	display: none;
+	animation-duration: 0.5s;
+	animation-name: animate-collapse;
+	animation-direction: reverse;
+	animation-timing-function: cubic-bezier(.26, .53, .74, 1.48);
+}
+
+
+@keyframes animate-expand {
+	0% {
+		opacity: 0;
+		transform: scale(1.0, 0.2);
+	}
+
+	100% {
+		opacity: 1;
+		transform: scale(1.0, 1.0);
+	}
+}
+
+@keyframes animate-collapse {
+	0% {
+		opacity: 0;
+		transform: scale(1.0, 1.0);
+	}
+
+	100% {
+		opacity: 1;
+		transform: scale(1.0, 0.2);
+	}
+}
+
+
+.inboard-form * {
 	font-family: "Poppins", sans-serif;
 	color: #ffffff;
 	letter-spacing: 0.5px;
 	outline: none;
 	border: none;
-	z-index: 1;
 }
 
-.inboard-box h1 {
+
+
+.inboard-form h1 {
 	font-size: 32px;
 	font-weight: 700;
 	text-align: center;
@@ -43,21 +94,28 @@
 	opacity: 0.9;
 }
 
-.inboard-box h3 {
+.inboard-form h2 {
+	font-size: 24px;
+	font-weight: 700;
+	line-height: 42px;
+	text-align: center;
+}
+
+.inboard-form h3 {
 	font-size: 16px;
 	font-weight: 700;
 	line-height: 42px;
 	text-align: center;
 }
 
-.inboard-box label {
+.inboard-form label {
 	display: block;
 	margin-top: 30px;
 	font-size: 16px;
 	font-weight: 500;
 }
 
-.inboard-box input {
+.inboard-form input {
 	display: block;
 	height: 50px;
 	width: 100%;
@@ -70,19 +128,18 @@
 	font-weight: normal;
 }
 
-.inboard-box ::placeholder {
+.inboard-form ::placeholder {
 	color: #8f8e8e;
 }
 
-.inboard-box input:hover {
+.inboard-form input:hover {
 	outline: 2px solid rgba(2, 214, 30, 0.759);
 }
 
-.inboard-box button {
-	margin-top: 50px;
+.inboard-button-action,
+.inboard-button-goto {
+	margin-top: 32px;
 	width: 100%;
-	background-color: rgb(45, 164, 78);
-	color: rgb(182, 233, 220);
 	padding: 15px 0;
 	font-size: 18px;
 	font-weight: 600;
@@ -90,10 +147,27 @@
 	cursor: pointer;
 }
 
-.inboard-box button:hover {
+.inboard-button-action {
+	background-color: rgb(45, 164, 78);
+	color: rgb(182, 233, 220);
+}
+
+.inboard-button-action:hover {
 	background-color: rgb(47, 173, 83);
 	color: rgb(220, 238, 177);
 }
+
+.inboard-button-goto {
+	background-color: rgb(112, 124, 234);
+	color: rgb(182, 215, 233);
+}
+
+.inboard-button-goto:hover {
+	background-color: rgb(34, 144, 199);
+	color: rgb(204, 230, 240);
+}
+
+
 
 @media only screen and (max-width: 600px) {
 	body {
