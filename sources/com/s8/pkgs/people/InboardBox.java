@@ -14,7 +14,7 @@ public class InboardBox extends S8WebFrontObject {
 	 * @param session
 	 */
 	public InboardBox(S8WebFront front) {
-		super(front, "/S8-pkgs-people/InboardBox");
+		super(front, WebSources.ROOT_PATH + "/InboardBox");
 	}
 	
 	

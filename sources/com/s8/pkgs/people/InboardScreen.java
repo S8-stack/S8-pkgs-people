@@ -6,7 +6,7 @@ import com.s8.api.web.S8WebFrontObject;
 public class InboardScreen extends S8WebFrontObject {
 
 	public InboardScreen(S8WebFront front) {
-		super(front, "/S8-pkgs-people/InboardScreen");
+		super(front, WebSources.ROOT_PATH + "/InboardScreen");
 	}
 	
 	public void setBackground(S8WebFrontObject back) {

@@ -1,6 +1,8 @@
 
 import { InboardBox } from './InboardBox.js';
 import { NeObject } from '/S8-core-bohr-neon/NeObject.js';
+import { InboardMessage } from '/S8-pkgs-people/InboardMessage.js';
+import { InboardMessageSlot } from '/S8-pkgs-people/InboardMessageSlot.js';
 
 import { S8WebFront } from "/S8-pkgs-ui-carbide/S8WebFront.js";
 
@@ -26,6 +28,12 @@ export class LogInForm extends NeObject {
 	 * @type{HTMLDivElement}
 	 */
 	formNode;
+
+
+	/**
+	 * @type{InboardMessageSlot}
+	 */
+	feedback;
 
 
 
@@ -56,9 +64,9 @@ export class LogInForm extends NeObject {
 		let usernameInputNode = document.createElement("input");
 		usernameInputNode.setAttribute("type", "text");
 		usernameInputNode.setAttribute("placeholder", "Email");
+		usernameInputNode.addEventListener("click", function() { _this.feedback.clearMessage(); });
 		//usernameInputNode.setAttribute("id", "username");
 		this.formNode.appendChild(usernameInputNode);
-
 		this.usernameInputNode = usernameInputNode;
 
 		/* <label for="password">Password</label> */
@@ -73,8 +81,12 @@ export class LogInForm extends NeObject {
 		passwordInputNode.setAttribute("type", "password");
 		passwordInputNode.setAttribute("placeholder", "Password");
 		//passwordInputNode.setAttribute("id", "password");
+		passwordInputNode.addEventListener("click", function() { _this.feedback.clearMessage(); });
 		this.formNode.appendChild(passwordInputNode);
 		this.passwordInputNode = passwordInputNode;
+
+		this.feedback = new InboardMessageSlot();
+		this.formNode.appendChild(this.feedback.getEnvelope());
 
 
 		const _this = this;
@@ -106,12 +118,21 @@ export class LogInForm extends NeObject {
 		return this.formNode;
 	}
 
+
+	S8_set_message(message ){
+		this.feedback.setMessage(message);
+	}
+	
+
 	S8_render() { /* continuous rendering approach... */ }
+
 
 
 	S8_set_title(value) {
 		this.titleNode.innerText = value;
 	}
+
+
 
 	S8_dispose(){ /* nothing to do */ }
 }

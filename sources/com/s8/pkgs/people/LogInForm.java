@@ -25,13 +25,17 @@ public class LogInForm extends S8WebFrontObject {
 	 * @param title
 	 */
 	public LogInForm(S8WebFront front, String title) {
-		super(front, "/s8-pkgs-people/LogInForm");
+		super(front, WebSources.ROOT_PATH + "/LogInForm");
 		setTitle(title);
 	}
 	
 	
 	public void setTitle(String title) {
 		vertex.fields().setStringUTF8Field("title", title);
+	}
+	
+	public void setMessage(InboardMessage message) {
+		vertex.fields().setObjectField("message", message);
 	}
 	
 	

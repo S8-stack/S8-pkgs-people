@@ -2,6 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
+      "/S8-api/*": [ "../../../S8-api/web-sources/S8-api/*" ],
       "/S8-core-io-bytes/*": [ "../../../S8-core-io-bytes/web-sources/S8-core-io-bytes/*" ],
       "/S8-core-bohr-atom/*": [ "../../../S8-core-bohr-atom/web-sources/S8-core-bohr-atom/*" ],
       "/S8-core-bohr-neon/*": [ "../../../S8-core-bohr-neon/web-sources/S8-core-bohr-neon/*" ],

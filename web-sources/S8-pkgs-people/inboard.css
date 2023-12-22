@@ -110,7 +110,7 @@
 
 .inboard-form label {
 	display: block;
-	margin-top: 30px;
+	margin-top: 24px;
 	font-size: 16px;
 	font-weight: 500;
 }
@@ -138,9 +138,9 @@
 
 .inboard-button-action,
 .inboard-button-goto {
-	margin-top: 32px;
+	margin-top: 24px;
 	width: 100%;
-	padding: 15px 0;
+	padding: 12px 0;
 	font-size: 18px;
 	font-weight: 600;
 	border-radius: 5px;
@@ -158,12 +158,12 @@
 }
 
 .inboard-button-goto {
-	background-color: rgb(112, 124, 234);
+	background-color: rgb(115, 121, 171);
 	color: rgb(182, 215, 233);
 }
 
 .inboard-button-goto:hover {
-	background-color: rgb(34, 144, 199);
+	background-color: rgb(106, 183, 222);
 	color: rgb(204, 230, 240);
 }
 
@@ -175,3 +175,58 @@
 			url(https://source.unsplash.com/1080x2400?sunset+birdeye+ocean);
 	}
 }
+
+
+.inboard-message {
+	margin-top: 8px;
+	border-radius: 4px;
+	color: white;
+	font-family: Arial, HelveticaNeue;
+	display: flex;
+	flex-direction: row;
+}
+
+.inboard-message > div {
+	height: 32px;
+}
+
+.inboard-message-icon {
+	width: 32px;
+	padding: 8px;
+}
+
+.inboard-message-text {
+	padding: 10px 0 8px 6px;
+	font-size: 12px;
+	font-weight: normal;
+	color: rgb(214, 199, 199);
+}
+
+.inboard-message-validate {
+	border: solid 1px rgba(58, 249, 103, 30%);
+	background-color: rgba(58, 249, 103, 8%);
+}
+
+.inboard-message-validate svg {
+	fill: rgb(42, 203, 14);
+}
+
+.inboard-message-warning {
+	border: solid 1px rgba(246, 246, 107, 30%);
+	background-color: rgba(246, 246, 107, 8%);
+}
+
+.inboard-message-warning svg {
+	fill: rgb(217, 255, 2);
+}
+
+.inboard-message-error {
+	border: solid 1px rgba(250, 173, 42, 30%);
+	background-color: rgba(246, 246, 107, 8%);
+}
+
+.inboard-message-error svg {
+	fill: rgb(244, 12, 12);
+}
+
+
