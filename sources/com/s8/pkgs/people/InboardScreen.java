@@ -10,11 +10,11 @@ public class InboardScreen extends S8WebFrontObject {
 	}
 	
 	public void setBackground(S8WebFrontObject back) {
-		vertex.fields().setObjectField("background", back);
+		vertex.outbound().setObjectField("background", back);
 	}
 	
 	public void setModalBox(S8WebFrontObject box) {
-		vertex.fields().setObjectField("modalBox", box);
+		vertex.outbound().setObjectField("modalBox", box);
 	}
 
 }

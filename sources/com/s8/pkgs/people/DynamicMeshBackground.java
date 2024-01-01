@@ -21,11 +21,11 @@ public class DynamicMeshBackground extends S8WebFrontObject {
 	
 	
 	public void setLineColor(int[] rgba) {
-		vertex.fields().setUInt8ArrayField("lineColor", rgba);
+		vertex.outbound().setUInt8ArrayField("lineColor", rgba);
 	}
 	
 	public void setParticleColor(int[] rgba) {
-		vertex.fields().setUInt8ArrayField("particleColor", rgba);
+		vertex.outbound().setUInt8ArrayField("particleColor", rgba);
 	}
 
 }

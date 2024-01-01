@@ -25,8 +25,8 @@ public class InboardMessage extends S8WebFrontObject {
 	 */
 	public InboardMessage(S8WebFront front, Mode mode, String text) {
 		super(front, WebSources.ROOT_PATH + "/InboardMessage");
-		vertex.fields().setUInt8Field("mode", mode.code);
-		vertex.fields().setStringUTF8Field("text", text);
+		vertex.outbound().setUInt8Field("mode", mode.code);
+		vertex.outbound().setStringUTF8Field("text", text);
 	}
 	
 }

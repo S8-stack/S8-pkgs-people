@@ -19,12 +19,19 @@ public class InboardBox extends S8WebFrontObject {
 	
 	
 	
-	public void setLogInForm(LogInForm form) {
-		vertex.fields().setObjectField("loginForm", form);
+	
+	public void setForm(Form form) {
+		vertex.outbound().setObjectField("form", form);
 	}
 	
-	public void setSignUpForm(SignUpForm form) {
-		vertex.fields().setObjectField("signupForm", form);
+	
+	public void setLogo(String url) {
+		vertex.outbound().setStringUTF8Field("logo", url);
+	}
+	
+	
+	public void setTitle(String value) {
+		vertex.outbound().setStringUTF8Field("title", value);
 	}
 	
 	

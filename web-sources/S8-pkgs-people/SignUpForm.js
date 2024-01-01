@@ -1,6 +1,7 @@
 
 import { InboardBox } from './InboardBox.js';
 import { NeObject } from '/S8-core-bohr-neon/NeObject.js';
+import { InboardMessageSlot } from '/S8-pkgs-people/InboardMessageSlot.js';
 
 import { S8WebFront } from "/S8-pkgs-ui-carbide/S8WebFront.js";
 
@@ -27,9 +28,30 @@ export class SignUpForm extends NeObject {
 	formNode;
 
 
+	/** @type{HTMLInputElement} */
+	usernameInputNode;
+
+	/** @type{InboardMessageSlot} */
+	usernameFeedback;
+
+	/** @type{HTMLInputElement} */
+	definePasswordInputNode;
+
+	/** @type{InboardMessageSlot} */
+	definePasswordFeedback;
+	
+	/** @type{HTMLInputElement} */
+	confirmPasswordInputNode;
+
+	/** @type{InboardMessageSlot} */
+	confirmPasswordFeedback;
+
+
 
 	constructor() {
 		super();
+
+		const _this = this;
 
 		this.formNode = document.createElement("div");
 		this.formNode.classList.add("inboard-form");
@@ -57,8 +79,13 @@ export class SignUpForm extends NeObject {
 		usernameInputNode.setAttribute("placeholder", "Email");
 		//usernameInputNode.setAttribute("id", "username");
 		this.formNode.appendChild(usernameInputNode);
-
+		usernameInputNode.addEventListener("change", function(){
+			_this.S8_vertex.runStringUTF8("on-username-change", usernameInputNode.value);
+		}, false);
 		this.usernameInputNode = usernameInputNode;
+
+		this.usernameFeedback = new InboardMessageSlot();
+		this.formNode.appendChild(this.usernameFeedback.getEnvelope());
 
 		/* <define-password> */
 		/* <label for="password">Define Password</label> */
@@ -72,9 +99,15 @@ export class SignUpForm extends NeObject {
 		let definePasswordInputNode = document.createElement("input");
 		definePasswordInputNode.setAttribute("type", "password");
 		definePasswordInputNode.setAttribute("placeholder", "Password");
-		//passwordInputNode.setAttribute("id", "password");
+		definePasswordInputNode.addEventListener("change", function(){
+			_this.S8_vertex.runStringUTF8("on-define-password-change", definePasswordInputNode.value);
+		}, false);
 		this.formNode.appendChild(definePasswordInputNode);
-		this.definaPasswordInputNode = definePasswordInputNode;
+		this.definePasswordInputNode = definePasswordInputNode;
+
+
+		this.definePasswordFeedback = new InboardMessageSlot();
+		this.formNode.appendChild(this.definePasswordFeedback.getEnvelope());
 
 
 		/* </define-password> */
@@ -93,12 +126,17 @@ export class SignUpForm extends NeObject {
 		confirmPasswordInputNode.setAttribute("type", "password");
 		confirmPasswordInputNode.setAttribute("placeholder", "Confirm Password");
 		//passwordInputNode.setAttribute("id", "password");
+		confirmPasswordInputNode.addEventListener("change", function(){
+			_this.S8_vertex.runStringUTF8("on-confirm-password-change", confirmPasswordInputNode.value);
+		}, false);
 		this.formNode.appendChild(confirmPasswordInputNode);
 		this.confirmPasswordInputNode = confirmPasswordInputNode;
 
+		this.confirmPasswordFeedback = new InboardMessageSlot();
+		this.formNode.appendChild(this.confirmPasswordFeedback.getEnvelope());
+
 		/* </confirm-password> */
 
-		const _this = this;
 
 		/* <button>Log In</button> */
 		let actionButtonNode = document.createElement("button");
@@ -132,6 +170,18 @@ export class SignUpForm extends NeObject {
 
 	S8_set_title(value) {
 		this.titleNode.innerText = value;
+	}
+
+	S8_set_usernameFeedbackMessage(message){
+		this.usernameFeedback.setMessage(message);
+	}
+
+	S8_set_definePasswordFeedbackMessage(message){
+		this.definePasswordFeedback.setMessage(message);
+	}
+
+	S8_set_confirmPasswordFeedbackMessage(message){
+		this.confirmPasswordFeedback.setMessage(message);
 	}
 
 	S8_dispose() { /* nothing to do */ }
