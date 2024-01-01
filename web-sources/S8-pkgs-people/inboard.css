@@ -24,7 +24,7 @@
 	backdrop-filter: blur(8px);
 	border: 2px solid rgba(255, 255, 255, 0.1);
 	box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
-	padding: 50px 35px;
+	padding: 36px 32px;
 	z-index: 4;
 }
 
@@ -33,33 +33,65 @@
 	z-index: 1;
 }
 
+.inboard-logo {
+	/* default picture */
+	background-image: url(https://alphaventor.com/graphics/alphaventor%20logo%20-256px%20-white%20gen3.2.png);
+    height: 64px;
+    width: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position-x: 50%;
+}
+
+
+.inboard-box h1, .inboard-box h2, .inboard-box h3 {
+	font-family: "Poppins", sans-serif;
+	color: #ffffff;
+	letter-spacing: 0.5px;
+	outline: none;
+	border: none;
+	text-align: center;
+}
+
+
+.inboard-box h1 {
+	font-size: 28px;
+	font-weight: 600;
+	opacity: 0.9;
+	padding: 8px 0 0 0;
+}
+
+.inboard-box h2 {
+	font-size: 24px;
+	font-weight: 700;
+	line-height: 42px;
+}
+
+.inboard-box h3 {
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 42px;
+}
 
 .inboard-container-visible {
 	display: block;
-	animation-duration: 0.5s;
-	animation-name: animate-expand;
-	animation-direction: normal;
-	animation-timing-function: cubic-bezier(.26, .53, .74, 1.48);
 }
 
 .inboard-container-hidden {
 	display: none;
-	animation-duration: 0.5s;
-	animation-name: animate-collapse;
-	animation-direction: reverse;
-	animation-timing-function: cubic-bezier(.26, .53, .74, 1.48);
 }
 
 
 @keyframes animate-expand {
 	0% {
 		opacity: 0;
-		transform: scale(1.0, 0.2);
+		transform: scale(1.0, 0.25);
 	}
 
 	100% {
 		opacity: 1;
 		transform: scale(1.0, 1.0);
+		display: block;
 	}
 }
 
@@ -72,9 +104,17 @@
 	100% {
 		opacity: 1;
 		transform: scale(1.0, 0.2);
+		display: none;
 	}
 }
 
+.inboard-form {
+	display: block;
+	animation-duration: 0.25s;
+	animation-name: animate-expand;
+	animation-direction: normal;
+	animation-timing-function: cubic-bezier(.47,1.64,.41,.8); /* cubic-bezier(.47, 1.64, .41, .8); */
+}
 
 .inboard-form * {
 	font-family: "Poppins", sans-serif;
@@ -86,43 +126,22 @@
 
 
 
-.inboard-form h1 {
-	font-size: 32px;
-	font-weight: 700;
-	text-align: center;
-	color: #fff;
-	opacity: 0.9;
-}
-
-.inboard-form h2 {
-	font-size: 24px;
-	font-weight: 700;
-	line-height: 42px;
-	text-align: center;
-}
-
-.inboard-form h3 {
-	font-size: 16px;
-	font-weight: 700;
-	line-height: 42px;
-	text-align: center;
-}
 
 .inboard-form label {
 	display: block;
 	margin-top: 24px;
-	font-size: 16px;
+	font-size: 14px;
 	font-weight: 500;
 }
 
 .inboard-form input {
 	display: block;
-	height: 50px;
+	height: 46px;
 	width: 100%;
 	background-color: rgba(255, 255, 255, 0.05);
-	border-radius: 3px;
+	border-radius: 4px;
 	padding: 0 10px;
-	margin-top: 8px;
+	margin-top: 6px;
 	font-family: Arial, HelveticaNeue;
 	font-size: 16px;
 	font-weight: normal;
@@ -138,16 +157,16 @@
 
 .inboard-button-action,
 .inboard-button-goto {
+	cursor: pointer;
 	margin-top: 24px;
 	width: 100%;
 	padding: 12px 0;
 	font-size: 18px;
-	font-weight: 600;
-	border-radius: 5px;
-	cursor: pointer;
+	border-radius: 6px;
 }
 
 .inboard-button-action {
+	font-weight: 600;
 	background-color: rgb(45, 164, 78);
 	color: rgb(182, 233, 220);
 }
@@ -158,14 +177,17 @@
 }
 
 .inboard-button-goto {
-	background-color: rgb(115, 121, 171);
-	color: rgb(182, 215, 233);
+	font-weight: 400;
+	background-color: rgb(115, 121, 171, 0.2);
+    border: solid 1px rgba(182,212, 236, 0.2);
+    color: rgb(182, 215, 233);
 }
 
 .inboard-button-goto:hover {
 	background-color: rgb(106, 183, 222);
 	color: rgb(204, 230, 240);
 }
+
 
 
 

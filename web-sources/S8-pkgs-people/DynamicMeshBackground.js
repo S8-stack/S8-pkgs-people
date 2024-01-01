@@ -14,27 +14,33 @@ S8WebFront.CSS_import('/S8-pkgs-people/DynamicMeshBackground.css');
 export class DynamicMeshBackground extends NeObject {
 
 
+
+	/**
+	 * @type{CanvasRenderingContext2D}
+	 */
+	context;
+
 	/**
 	 * @type{string} RGBA format particle color
 	 */
-	particleColor = [200, 200, 200];
+	particleColor = [128, 160, 200];
 
 	/**
-	 * @type{string} RGBA line color
+	 * @type{Number[]} RGBA line color
 	 */
-	lineColor = [200, 200, 255];
-	
+	lineColor = [180, 180, 212];
+
 	/**
 	 * @type{number} nb of particels
 	 */
 	particleAmount = 64;
-	
-	defaultSpeed = 1;
-	
-	variantSpeed = 1;
+
+	defaultSpeed = 0.4;
+
+	variantSpeed = 0.4;
 
 	defaultRadius = 2;
-	
+
 	variantRadius = 2;
 
 	linkRadius = 256;
@@ -49,6 +55,10 @@ export class DynamicMeshBackground extends NeObject {
 	 * @type{number} screen height
 	 */
 	h;
+
+
+	xShifts;
+	yShifts;
 
 	drawArea;
 
@@ -69,14 +79,15 @@ export class DynamicMeshBackground extends NeObject {
 
 	constructor() {
 		super();
-		
+
 		this.canvasBody = document.createElement("canvas");
+		this.context = this.canvasBody.getContext("2d");
 		this.canvasBody.classList.add("dynamic-mesh-background");
 		this.start();
 	}
-	
-	
-	getEnvelope(){
+
+
+	getEnvelope() {
 		return this.canvasBody;
 	}
 
@@ -85,6 +96,21 @@ export class DynamicMeshBackground extends NeObject {
 	resizeReset() {
 		this.w = this.canvasBody.width = window.innerWidth;
 		this.h = this.canvasBody.height = window.innerHeight;
+
+		this.xShifts = new Array(9);
+		this.yShifts = new Array(9);
+		const w = this.w;
+		const h = this.h;
+		
+		this.xShifts[0] = 0; this.yShifts[0] =-h;
+		this.xShifts[1] = 0; this.yShifts[1] = 0;
+		this.xShifts[2] = 0; this.yShifts[2] = h;
+		this.xShifts[3] = w; this.yShifts[3] =-h;
+		this.xShifts[4] = w; this.yShifts[4] = 0;
+		this.xShifts[5] = w; this.yShifts[5] = h;
+		this.xShifts[6] =-w; this.yShifts[6] =-h;
+		this.xShifts[7] =-w; this.yShifts[7] = 0;
+		this.xShifts[8] =-w; this.yShifts[8] = h;
 	}
 
 
@@ -97,46 +123,28 @@ export class DynamicMeshBackground extends NeObject {
 		}, this.delay);
 	}
 
-	checkDistance(x1, y1, x2, y2) {
-	
-		return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-	}
 
-
-	linkPoints(point1, hubs) {
-		let rgb = this.lineColor;
-
-		for (let i = 0; i < hubs.length; i++) {
-			let distance = this.checkDistance(point1.x, point1.y, hubs[i].x, hubs[i].y);
-			let opacity = 1 - distance / this.linkRadius;
-			
-			if (opacity > 0) {
-				this.drawArea.lineWidth = 0.25;
-				this.drawArea.strokeStyle = `rgba(${rgb[0]}, ${rgb[0]}, ${rgb[0]}, ${opacity})`;
-				this.drawArea.beginPath();
-				this.drawArea.moveTo(point1.x, point1.y);
-				this.drawArea.lineTo(hubs[i].x, hubs[i].y);
-				this.drawArea.closePath();
-				this.drawArea.stroke();
-			}
-		}
-	}
 
 	redraw() {
 		this.drawArea.clearRect(0, 0, this.w, this.h);
 		let nParticles = this.particles.length;
+
+		this.context.shadowBlur = 4;
+		this.context.shadowColor = "white";
 		for (let i = 0; i < nParticles; i++) {
 			let particle = this.particles[i];
 			particle.update();
-			particle.draw();
+			particle.drawBall();
 		}
+
+		this.context.shadowBlur = 0;
 		for (let i = 0; i < nParticles; i++) {
-			this.linkPoints(this.particles[i], this.particles);
+			this.particles[i].drawLinks();
 		}
 
 
 		let _this = this;
-		this.requestAnimationID = window.requestAnimationFrame(function(){ _this.redraw() });
+		this.requestAnimationID = window.requestAnimationFrame(function () { _this.redraw() });
 	}
 
 	start() {
@@ -154,14 +162,14 @@ export class DynamicMeshBackground extends NeObject {
 
 		this.particles = [];
 		for (let i = 0; i < this.particleAmount; i++) {
-			this.particles.push(new Particle(this));
+			this.particles.push(new Particle(this, i));
 		}
 		this.requestAnimationID = window.requestAnimationFrame(function () {
 			_this.redraw();
 		});
 	}
-	
-	stop(){
+
+	stop() {
 		window.cancelAnimationFrame(this.requestAnimationID);
 	}
 
@@ -171,15 +179,15 @@ export class DynamicMeshBackground extends NeObject {
 	}
 
 
-	S8_set_particleColor(color){
+	S8_set_particleColor(color) {
 		this.particleColor = color;
 	}
 
-	S8_set_particleAmount(n){
+	S8_set_particleAmount(n) {
 		this.particleAmount = n;
 	}
 
-	S8_set_lineColor(color){
+	S8_set_lineColor(color) {
 		this.lineColor = color;
 	}
 
@@ -192,20 +200,23 @@ export class DynamicMeshBackground extends NeObject {
 
 class Particle {
 
-
-
 	/**
-	 * @type{DynamicMeshScreen} screen
+	 * @type{DynamicMeshBackground} screen
 	 */
 	screen;
+
+	/** @type{number} : index */
+	index;
 
 
 	/**
 	 * 
-	 * @param {DynamicMeshScreen} screen 
+	 * @param {DynamicMeshBackground} screen 
+	 * @param {number} index 
 	 */
-	constructor(screen) {
+	constructor(screen, index) {
 		this.screen = screen;
+		this.index = index;
 
 		this.x = Math.random() * screen.w;
 		this.y = Math.random() * screen.h;
@@ -216,32 +227,40 @@ class Particle {
 		const rgb = screen.particleColor;
 		this.color = `rgb(${rgb[0]}, ${rgb[0]}, ${rgb[0]})`;
 		this.radius = screen.defaultRadius + Math.random() * screen.variantRadius;
-		this.vector = {
-			x: Math.cos(this.directionAngle) * this.speed,
-			y: Math.sin(this.directionAngle) * this.speed
-		};
+		this.vx = Math.cos(this.directionAngle) * this.speed;
+		this.vy = Math.sin(this.directionAngle) * this.speed;
 	}
+
 
 	update() {
 		this.border();
-		this.x += this.vector.x;
-		this.y += this.vector.y;
+		this.x += this.vx;
+		this.y += this.vy;
 	}
 
 	border() {
+		/*
 		if (this.x >= this.screen.w || this.x <= 0) {
-			this.vector.x *= -1;
+			this.vx *= -1;
 		}
 		if (this.y >= this.screen.h || this.y <= 0) {
-			this.vector.y *= -1;
+			this.vy *= -1;
 		}
-		if (this.x > this.screen.w) this.x = this.screen.w;
-		if (this.y > this.screen.h) this.y = this.screen.h;
-		if (this.x < 0) this.x = 0;
-		if (this.y < 0) this.y = 0;
+		*/
+		if (this.x > this.screen.w) { this.x = 0; }
+		if (this.y > this.screen.h) { this.y = 0; }
+		if (this.x < 0) { this.x = this.screen.w; }
+		if (this.y < 0) { this.y = this.screen.h; }
 	}
 
-	draw() {
+	distance(x, y) {
+		let dx = x - this.x;
+		let dy = y - this.y;
+		return Math.sqrt(dx * dx + dy * dy);
+	}
+
+
+	drawBall() {
 		let drawArea = this.screen.drawArea;
 
 		drawArea.beginPath();
@@ -250,5 +269,47 @@ class Particle {
 		drawArea.fillStyle = this.color;
 		drawArea.fill();
 	};
+
+
+	/**
+	 * 
+	 * @param {DynamicMeshBackground} screen 
+	 * @param {*} hubs 
+	 * @param {*} lineColor 
+	 * @param {*} linkRadius 
+	 */
+	drawLinks() {
+
+		const drawArea = this.screen.drawArea;
+		const particles = this.screen.particles;
+		const rgb = this.screen.lineColor;
+		const linkRadius = this.screen.linkRadius;
+		const xShifts = this.screen.xShifts, yShifts = this.screen.yShifts;
+
+		let xActual, yActual, xShifted, yShifted;
+
+		for (let i = 0; i < particles.length; i++) {
+			let particle = particles[i];
+			xActual = this.x; yActual = this.y;
+
+			if (this.index < particle.index) {
+				for (let j = 0; j < 8; j++) {
+					xShifted = xActual + xShifts[j]; yShifted = yActual + yShifts[j];
+					let distance = particle.distance(xShifted, yShifted);
+					let opacity = 1 - distance / linkRadius;
+	
+					if (opacity > 0) {
+						drawArea.lineWidth = 0.25;
+						drawArea.strokeStyle = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${opacity})`;
+						drawArea.beginPath();
+						drawArea.moveTo(xShifted, yShifted);
+						drawArea.lineTo(particle.x, particle.y);
+						drawArea.closePath();
+						drawArea.stroke();
+					}
+				}
+			}
+		}
+	}
 };
 

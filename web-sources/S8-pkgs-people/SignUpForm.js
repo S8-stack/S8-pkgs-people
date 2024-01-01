@@ -1,6 +1,7 @@
 
 import { InboardBox } from './InboardBox.js';
 import { NeObject } from '/S8-core-bohr-neon/NeObject.js';
+import { InboardField } from '/S8-pkgs-people/InboardField.js';
 import { InboardMessageSlot } from '/S8-pkgs-people/InboardMessageSlot.js';
 
 import { S8WebFront } from "/S8-pkgs-ui-carbide/S8WebFront.js";
@@ -28,23 +29,15 @@ export class SignUpForm extends NeObject {
 	formNode;
 
 
-	/** @type{HTMLInputElement} */
-	usernameInputNode;
+	/** @type{InboardField} */
+	usernameField;
 
-	/** @type{InboardMessageSlot} */
-	usernameFeedback;
+	/** @type{InboardField} */
+	definePasswordField;
 
-	/** @type{HTMLInputElement} */
-	definePasswordInputNode;
+	/** @type{InboardField} */
+	confirmPasswordField;
 
-	/** @type{InboardMessageSlot} */
-	definePasswordFeedback;
-	
-	/** @type{HTMLInputElement} */
-	confirmPasswordInputNode;
-
-	/** @type{InboardMessageSlot} */
-	confirmPasswordFeedback;
 
 
 
@@ -56,87 +49,37 @@ export class SignUpForm extends NeObject {
 		this.formNode = document.createElement("div");
 		this.formNode.classList.add("inboard-form");
 
-		/* <title> */
-		this.titleNode = document.createElement("h1");
-		this.titleNode.innerText = "<Title>";
-		this.formNode.appendChild(this.titleNode);
-
+		/*
 		let subTitleNode = document.createElement("h3");
 		subTitleNode.innerText = "Sign-up";
 		this.formNode.appendChild(subTitleNode);
-
+		*/
 
 		/* <label for="username">Username</label> */
-		let usernameLabelNode = document.createElement("label");
-		usernameLabelNode.setAttribute("for", "username");
-		usernameLabelNode.innerText = "Username";
-		this.formNode.appendChild(usernameLabelNode);
-
-
-		/* <input type="text" placeholder="Email" id="username"> */
-		let usernameInputNode = document.createElement("input");
-		usernameInputNode.setAttribute("type", "text");
-		usernameInputNode.setAttribute("placeholder", "Email");
-		//usernameInputNode.setAttribute("id", "username");
-		this.formNode.appendChild(usernameInputNode);
-		usernameInputNode.addEventListener("change", function(){
-			_this.S8_vertex.runStringUTF8("on-username-change", usernameInputNode.value);
+		this.usernameField = new InboardField("username", "text", "Username", "Email");
+		this.usernameField.inputNode.addEventListener("change", function(){
+			_this.S8_vertex.runStringUTF8("on-username-change", _this.usernameField.getValue());
 		}, false);
-		this.usernameInputNode = usernameInputNode;
-
-		this.usernameFeedback = new InboardMessageSlot();
-		this.formNode.appendChild(this.usernameFeedback.getEnvelope());
+		this.formNode.appendChild(this.usernameField.getEnvelope());
 
 		/* <define-password> */
 		/* <label for="password">Define Password</label> */
-		let definePasswordLabelNode = document.createElement("label");
-		definePasswordLabelNode.setAttribute("for", "password");
-		definePasswordLabelNode.innerText = "Define Password";
-		this.formNode.appendChild(definePasswordLabelNode);
-
-
-		/* <input type="password" placeholder="Password" id="password"> */
-		let definePasswordInputNode = document.createElement("input");
-		definePasswordInputNode.setAttribute("type", "password");
-		definePasswordInputNode.setAttribute("placeholder", "Password");
-		definePasswordInputNode.addEventListener("change", function(){
-			_this.S8_vertex.runStringUTF8("on-define-password-change", definePasswordInputNode.value);
+		this.definePasswordField = new InboardField("define", "password", "Define Password", "Password");
+		this.definePasswordField.inputNode.addEventListener("input", function(){
+			_this.validatePassword();
+			_this.validateRecopy();
 		}, false);
-		this.formNode.appendChild(definePasswordInputNode);
-		this.definePasswordInputNode = definePasswordInputNode;
-
-
-		this.definePasswordFeedback = new InboardMessageSlot();
-		this.formNode.appendChild(this.definePasswordFeedback.getEnvelope());
-
-
+		this.formNode.appendChild(this.definePasswordField.getEnvelope());
 		/* </define-password> */
 
 
 		/* <confirm-password> */
-
-		/* <label for="password">Password</label> */
-		let confirmPasswordLabelNode = document.createElement("label");
-		confirmPasswordLabelNode.setAttribute("for", "password");
-		confirmPasswordLabelNode.innerText = "Confirm Password";
-		this.formNode.appendChild(confirmPasswordLabelNode);
-
-		/* <input type="password" placeholder="Password" id="password"> */
-		let confirmPasswordInputNode = document.createElement("input");
-		confirmPasswordInputNode.setAttribute("type", "password");
-		confirmPasswordInputNode.setAttribute("placeholder", "Confirm Password");
-		//passwordInputNode.setAttribute("id", "password");
-		confirmPasswordInputNode.addEventListener("change", function(){
-			_this.S8_vertex.runStringUTF8("on-confirm-password-change", confirmPasswordInputNode.value);
+		this.confirmPasswordField = new InboardField("confirm", "password", "Confirm Password", "Recopy Password");
+		this.confirmPasswordField.inputNode.addEventListener("input", function(){
+			_this.validateRecopy();
 		}, false);
-		this.formNode.appendChild(confirmPasswordInputNode);
-		this.confirmPasswordInputNode = confirmPasswordInputNode;
-
-		this.confirmPasswordFeedback = new InboardMessageSlot();
-		this.formNode.appendChild(this.confirmPasswordFeedback.getEnvelope());
-
+		this.formNode.appendChild(this.confirmPasswordField.getEnvelope());
 		/* </confirm-password> */
-
 
 		/* <button>Log In</button> */
 		let actionButtonNode = document.createElement("button");
@@ -144,9 +87,12 @@ export class SignUpForm extends NeObject {
 		actionButtonNode.innerText = "Sign Up";
 		
 		actionButtonNode.addEventListener("click", function () {
-			const credentials = [_this.usernameInputNode.value, _this.passwordInputNode.value];
+			const credentials = [
+				_this.usernameField.getValue(), 
+				_this.definePasswordField.getValue(),
+				_this.confirmPasswordField.getValue()];
 			/*S8WebFront.loseFocus();*/
-			_this.S8_vertex.runStringUTF8Array("on-trying-login", credentials);
+			_this.S8_vertex.runStringUTF8Array("on-signup", credentials);
 		});
 		this.actionButtonNode = actionButtonNode;
 		this.formNode.appendChild(actionButtonNode);
@@ -155,10 +101,47 @@ export class SignUpForm extends NeObject {
 		let gotoButtonNode = document.createElement("button");
 		gotoButtonNode.classList.add("inboard-button-goto");
 		gotoButtonNode.innerText = "Go to LogIn";
-		gotoButtonNode.addEventListener("click", function() { _this.box.swap(); });
+		gotoButtonNode.addEventListener("click", function() { _this.S8_vertex.runVoid("goto-login"); });
 		this.gotoButtonNode = gotoButtonNode;
 		this.formNode.appendChild(gotoButtonNode);
 	}
+
+
+	validatePassword(){
+		let message = this.checkPassword();
+		if(message.length > 0){
+			this.isPasswordDefined = false;
+			this.definePasswordField.setWarningMessage(message);
+		}
+		else {
+			this.isPasswordDefined = true;
+			this.definePasswordField.setValidateMessage("Password is valid");
+		}
+	}
+
+	checkPassword(){
+		let password = this.definePasswordField.getValue();
+		let n = PASSWORD_VALIDATION_RULES.length;
+		for(let i = 0; i<n; i++){
+			let rule = PASSWORD_VALIDATION_RULES[i];
+			if(!rule.validate(password)){ 
+				return rule.text;
+			}
+		}
+		return "";
+	}
+
+	validateRecopy(){
+		let dPassword = this.definePasswordField.getValue();
+		let cPassword = this.confirmPasswordField.getValue();
+		if(dPassword != cPassword){
+			this.confirmPasswordField.setWarningMessage("Passwords do not match");
+		}
+		else {
+			this.confirmPasswordField.setValidateMessage("Password confirmed!");
+		}
+	}
+	
 
 
 	getEnvelope() {
@@ -168,21 +151,41 @@ export class SignUpForm extends NeObject {
 	S8_render() { /* continuous rendering approach... */ }
 
 
-	S8_set_title(value) {
-		this.titleNode.innerText = value;
-	}
-
 	S8_set_usernameFeedbackMessage(message){
-		this.usernameFeedback.setMessage(message);
+		this.usernameField.setMessage(message);
 	}
 
 	S8_set_definePasswordFeedbackMessage(message){
-		this.definePasswordFeedback.setMessage(message);
+		this.definePasswordField.setMessage(message);
 	}
 
 	S8_set_confirmPasswordFeedbackMessage(message){
-		this.confirmPasswordFeedback.setMessage(message);
+		this.confirmPasswordField.setMessage(message);
 	}
 
 	S8_dispose() { /* nothing to do */ }
 }
+
+
+
+class Rule {
+
+	constructor(text, check){
+		this.text = text;
+		this.regex = new RegExp(check);
+	}
+
+	validate(password) {
+		return this.regex.test(password);
+	}
+}
+
+
+export const PASSWORD_VALIDATION_RULES = [
+	new Rule("At least one upper case English letter", "(?=.*?[A-Z])"),
+	new Rule("At least one lower case English letter", "(?=.*?[a-z])"),
+	new Rule("At least one digit", "(?=.*?[0-9])"),
+	new Rule("At least one special character", "(?=.*?[#?!@$%^&*-])"),
+	new Rule("Minimum eight in length", ".{8,}")
+];
+

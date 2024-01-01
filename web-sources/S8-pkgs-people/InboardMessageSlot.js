@@ -1,12 +1,6 @@
-import { S8 } from "/S8-api/S8Context.js";
-import { S8Object } from "/S8-api/S8Object.js";
-import { InboardMessage } from "/S8-pkgs-people/InboardMessage.js";
 
+import { InboardMessage, VALIDATE_MODE, WARNING_MODE, ERROR_MODE } from "/S8-pkgs-people/InboardMessage.js";
 
-
-export const VALIDATE_MODE = 2;
-export const WARNING_MODE = 3;
-export const ERROR_MODE = 4;
 
 
 /**
@@ -37,6 +31,28 @@ export class InboardMessageSlot {
         return this.wrapperNode;
     }
 
+
+
+    setValidateMessage(text){
+        let message = new InboardMessage();
+        message.S8_set_mode(VALIDATE_MODE);
+        message.S8_set_text(text);
+        this.setMessage(message);
+    }
+
+    setWarningMessage(text){
+        let message = new InboardMessage();
+        message.S8_set_mode(WARNING_MODE);
+        message.S8_set_text(text);
+        this.setMessage(message);
+    }
+
+    setErrorMessage(text){
+        let message = new InboardMessage();
+        message.S8_set_mode(WARNING_MODE);
+        message.S8_set_text(text);
+        this.setMessage(message);
+    }
 
 
 	/**

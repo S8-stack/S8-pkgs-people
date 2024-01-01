@@ -22,28 +22,25 @@ export class InboardBox extends NeObject {
 		this.boxNode = document.createElement("div");
 		this.boxNode.classList.add("inboard-box");
 
-		this.container1Node = document.createElement("div");
-		this.container1Node.classList.add("inboard-container-visible");
-		this.boxNode.appendChild(this.container1Node);
+		this.logoNode = document.createElement("div");
+		this.logoNode.classList.add("inboard-logo");
+		this.boxNode.appendChild(this.logoNode);
 
-		this.container2Node = document.createElement("div");
-		this.container2Node.classList.add("inboard-container-hidden");
-		this.boxNode.appendChild(this.container2Node);
+		this.titleNode = document.createElement("h1");
+		this.titleNode.innerText = "<Title>";
+		this.boxNode.appendChild(this.titleNode);
+
+		this.containerNode = document.createElement("div");
+		this.containerNode.classList.add("inboard-container-visible");
+		this.boxNode.appendChild(this.containerNode);
+
+		
 	}
 
 
-	swap(){
-		if(this.isContainer1Visible){
-			this.container1Node.classList.replace("inboard-container-visible", "inboard-container-hidden");
-			this.container2Node.classList.replace("inboard-container-hidden", "inboard-container-visible");
-			this.isContainer1Visible = false;
-		}
-		else{
-			this.container1Node.classList.replace("inboard-container-hidden", "inboard-container-visible");
-			this.container2Node.classList.replace("inboard-container-visible", "inboard-container-hidden");
-			this.isContainer1Visible = true;
-		}
-	}
+
+
+
 
 
 	getEnvelope() {
@@ -51,17 +48,33 @@ export class InboardBox extends NeObject {
 	}
 
 	S8_render() { /* continuous rendering approach... */ }
-
-
-	S8_set_loginForm(form) {
-		form.box = this;
-		this.container1Node.appendChild(form.getEnvelope());
+	/**
+		 * 
+		 * @param {*} value 
+		 */
+	S8_set_logo(value) {
+		this.logoNode.style.backgroundImage = `url(${value})`;
 	}
 
-	S8_set_signupForm(form) {
-		form.box = this;
-		this.container2Node.appendChild(form.getEnvelope());
+	/**
+	 * 
+	 * @param {*} value 
+	 */
+	S8_set_title(value) {
+		this.titleNode.innerText = value;
 	}
 
-	S8_dispose(){ /* nothing to do */ }
+
+	/**
+	 * 
+	 * @param {*} form 
+	 */
+	S8_set_form(form) {
+		/* remove potential child nodes in containerNode */
+		while (this.containerNode.lastChild) { this.containerNode.removeChild(this.containerNode.lastChild); }
+
+		this.containerNode.appendChild(form.getEnvelope());
+	}
+
+	S8_dispose() { /* nothing to do */ }
 }
