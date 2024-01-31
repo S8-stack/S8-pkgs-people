@@ -1,8 +1,10 @@
-package com.s8.pkgs.people;
+package com.s8.pkgs.people.forms;
 
 import com.s8.api.web.S8WebFront;
 import com.s8.api.web.functions.arrays.StringUTF8ArrayNeFunction;
 import com.s8.api.web.functions.none.VoidNeFunction;
+import com.s8.pkgs.people.InboardMessage;
+import com.s8.pkgs.people.WebSources;
 
 
 /**
@@ -10,12 +12,13 @@ import com.s8.api.web.functions.none.VoidNeFunction;
  */
 public class LogInForm extends Form {
 
+	
 	/**
 	 * 
 	 * @param session
 	 */
 	public LogInForm(S8WebFront front) {
-		super(front, WebSources.ROOT_PATH + "/LogInForm");
+		super(front, "/LogInForm");
 	}
 	
 	
@@ -30,10 +33,19 @@ public class LogInForm extends Form {
 	}
 	
 	
+	/**
+	 * 
+	 * @param title
+	 */
 	public void setTitle(String title) {
 		vertex.outbound().setStringUTF8Field("title", title);
 	}
 	
+	
+	/**
+	 * 
+	 * @param message
+	 */
 	public void setMessage(InboardMessage message) {
 		vertex.outbound().setObjectField("message", message);
 	}
@@ -46,6 +58,7 @@ public class LogInForm extends Form {
 	public void onTyringLogin(StringUTF8ArrayNeFunction func) {
 		vertex.inbound().setStringUTF8ArrayMethod("on-trying-login", func);
 	}
+	
 	
 	/**
 	 * 

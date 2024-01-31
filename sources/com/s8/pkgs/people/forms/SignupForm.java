@@ -1,10 +1,11 @@
-package com.s8.pkgs.people;
+package com.s8.pkgs.people.forms;
 
 
 import com.s8.api.web.S8WebFront;
 import com.s8.api.web.functions.arrays.StringUTF8ArrayNeFunction;
 import com.s8.api.web.functions.none.VoidNeFunction;
 import com.s8.api.web.functions.primitives.StringUTF8NeFunction;
+import com.s8.pkgs.people.InboardMessage;
 
 
 /**
@@ -21,7 +22,7 @@ public class SignupForm extends Form {
 	 * @param session
 	 */
 	public SignupForm(S8WebFront front) {
-		super(front, WebSources.ROOT_PATH + "/SignUpForm");
+		super(front, "/SignUpForm");
 	}
 	
 

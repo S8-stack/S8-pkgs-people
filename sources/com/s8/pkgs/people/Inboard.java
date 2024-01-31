@@ -3,6 +3,8 @@ package com.s8.pkgs.people;
 import com.s8.api.flow.S8AsyncFlow;
 import com.s8.api.flow.S8User;
 import com.s8.api.web.S8WebFront;
+import com.s8.pkgs.people.process.LoginManager;
+import com.s8.pkgs.people.process.SignupManager;
 
 public abstract class Inboard {
 	
@@ -17,9 +19,9 @@ public abstract class Inboard {
 	private InboardBox box;
 	
 	
-	private SignupModule signupModule;
+	private SignupManager signupModule;
 	
-	private LoginModule loginModule;
+	private LoginManager loginModule;
 	
 	
 	
@@ -47,13 +49,13 @@ public abstract class Inboard {
 	
 
 	
-	public LoginModule getLoginModule() {
-		if(loginModule == null) { loginModule = new LoginModule(this); }
+	public LoginManager getLoginModule() {
+		if(loginModule == null) { loginModule = new LoginManager(this); }
 		return loginModule;
 	}
 
-	public SignupModule getSignupModule() {
-		if(signupModule == null) { signupModule = new SignupModule(this); }
+	public SignupManager getSignupModule() {
+		if(signupModule == null) { signupModule = new SignupManager(this); }
 		return signupModule;
 	}
 	

@@ -1,4 +1,4 @@
-package com.s8.pkgs.people;
+package com.s8.pkgs.people.process;
 
 import java.io.IOException;
 
@@ -8,15 +8,20 @@ import com.s8.api.flow.mail.SendMailS8Request;
 import com.s8.api.flow.table.objects.RowS8Object;
 import com.s8.api.flow.table.requests.GetRowS8Request;
 import com.s8.api.web.S8WebFront;
+import com.s8.pkgs.people.Inboard;
+import com.s8.pkgs.people.InboardMessage;
+import com.s8.pkgs.people.S8People;
 import com.s8.pkgs.people.InboardMessage.Mode;
+import com.s8.pkgs.people.forms.SignupForm;
+import com.s8.pkgs.people.forms.ValidateForm;
 
-public class SignupModule {
+public class SignupManager {
 	
 	public final Inboard inboard;
 	
-	private SignupForm form0;
+	private SignupForm signUpForm;
 	
-	private ValidateForm form1;
+	private ValidateForm validationForm;
 	
 
 	private String validationCode;
@@ -27,7 +32,7 @@ public class SignupModule {
 	 * 
 	 * @param inboard
 	 */
-	public SignupModule(Inboard inboard) {
+	public SignupManager(Inboard inboard) {
 		super();
 		this.inboard = inboard;
 	}
@@ -35,11 +40,11 @@ public class SignupModule {
 	
 	public void start(S8WebFront front) {
 		
-		if(form0 == null) {
+		if(signUpForm == null) {
 			
-			form0 = new SignupForm(front);
+			signUpForm = new SignupForm(front);
 
-			form0.onUsernameChange((f4, username) -> {
+			signUpForm.onUsernameChange((f4, username) -> {
 				
 				boolean isValideEmailAddress = S8People.VALID_EMAIL_ADDRESS.matcher(username).matches();
 				
@@ -48,11 +53,11 @@ public class SignupModule {
 						public @Override void onSucceed(Status status, RowS8Object row) {
 							if(status == Status.OK) {
 								if(row != null) {
-									form0.setUsernameFeedbackMessage(
+									signUpForm.setUsernameFeedbackMessage(
 											new InboardMessage(front, Mode.WARNING, "Username is already reserved"));
 								}
 								else {
-									form0.setUsernameFeedbackMessage(
+									signUpForm.setUsernameFeedbackMessage(
 											new InboardMessage(front, Mode.VALIDATE, "Username is available!"));
 								}
 							}
@@ -64,14 +69,14 @@ public class SignupModule {
 					
 				}
 				else {
-					form0.setUsernameFeedbackMessage(
+					signUpForm.setUsernameFeedbackMessage(
 							new InboardMessage(front, Mode.WARNING, "Username MUST be a valid email address"));
 				}
 				f4.send();
 			});
 			
 			
-			form0.onSignUp((f4, credentials) -> {
+			signUpForm.onSignUp((f4, credentials) -> {
 				
 				String username = credentials[0];
 				boolean isValideEmailAddress = S8People.VALID_EMAIL_ADDRESS.matcher(username).matches();
@@ -81,31 +86,31 @@ public class SignupModule {
 						public @Override void onSucceed(Status status, RowS8Object row) {
 							if(status == Status.OK) {
 								if(row != null) {
-									form0.setUsernameFeedbackMessage(
+									signUpForm.setUsernameFeedbackMessage(
 											new InboardMessage(front, Mode.ERROR, "Username is not available"));
 								}
 								else {
-									form0.setUsernameFeedbackMessage(null); /* clear message */
+									signUpForm.setUsernameFeedbackMessage(null); /* clear message */
 									
 									/* then */
 									
 									String passwordDefinition = credentials[1];
 									if(passwordDefinition != null && 
 											S8People.VALID_PASSWORD.matcher(passwordDefinition).matches()) {
-										form0.setDefinePasswordFeedbackMessage(null); /* clear message */
+										signUpForm.setDefinePasswordFeedbackMessage(null); /* clear message */
 										
 										String passwordConfirmation = credentials[2];
 										if(passwordDefinition.equals(passwordConfirmation)) {
-											form0.setConfirmPasswordFeedbackMessage(null);
+											signUpForm.setConfirmPasswordFeedbackMessage(null);
 											onSignUpSucceed(front, f4, username, passwordDefinition);
 										}
 										else {
-											form0.setConfirmPasswordFeedbackMessage(
+											signUpForm.setConfirmPasswordFeedbackMessage(
 													new InboardMessage(front, Mode.WARNING, "Password recopy is not matching"));
 										}
 									}
 									else {
-										form0.setDefinePasswordFeedbackMessage(
+										signUpForm.setDefinePasswordFeedbackMessage(
 												new InboardMessage(front, Mode.WARNING, "Password is not valid"));
 									}
 								}
@@ -119,7 +124,7 @@ public class SignupModule {
 					
 				}
 				else {
-					form0.setUsernameFeedbackMessage(
+					signUpForm.setUsernameFeedbackMessage(
 							new InboardMessage(front, Mode.WARNING, "Username MUST be a valid email address"));
 				}
 				f4.send();
@@ -127,14 +132,14 @@ public class SignupModule {
 			});
 		
 			
-			form0.onGoToLogIn(f5 -> { 
+			signUpForm.onGoToLogIn(f5 -> { 
 				inboard.getLoginModule().start(front); 
 				f5.send(); 
 			});
 			
 		}
 		
-		inboard.getBox(front).setForm(form0);
+		inboard.getBox(front).setForm(signUpForm);
 	}
 	
 	
@@ -148,9 +153,25 @@ public class SignupModule {
 		f4.sendEMail(new SendMailS8Request(true) {
 			public @Override void compose(S8Mail mail) throws IOException {
 				mail.setRecipient(username);
+				
 				mail.setSubject("Sign-Up email confirmation");
-				mail.appendText("Please find below your validation code:");
-				mail.appendText(validationCode);
+				
+				mail.HTML_setWrapperStyle(".mg-mail-wrapper", null);
+				mail.HTML_appendBaseElement("div", 
+						".mg-mail-banner", 
+						"background-image: url(https://alphaventor.com/assets/logos/AlphaventorLogo-1024px-black-text.png);", 
+						null);
+				
+				mail.HTML_appendBaseElement("h1", ".mg-h1", null, "Hello dear AlphaVentor user!");
+				mail.HTML_appendBaseElement("h2", ".mg-h2", null, "Welcome to a world of designs");
+				mail.HTML_appendBaseElement("p", ".mg-p", null, 
+						"Please find below your validation code for the creation of your account:");
+				
+				mail.HTML_appendBaseElement("div", ".mg-code-wrapper", null, validationCode);
+				
+				mail.HTML_appendBaseElement("p", ".mg-p", null, 
+						"If you're not the initiator of this, please report to pierre.convert@alphaventor.com");
+				
 			}
 			
 			@Override
@@ -166,9 +187,9 @@ public class SignupModule {
 		});
 		
 		
-		if(form1 == null) {
-			form1 = new ValidateForm(front);
-			form1.onTyringValidate((f5, codeRecopy) -> {
+		if(validationForm == null) {
+			validationForm = new ValidateForm(front);
+			validationForm.onTyringValidate((f5, codeRecopy) -> {
 				if(validationCode.equals(codeRecopy)) {
 					inboard.onSignUpSucceed(front, f5, username, password);
 				}
@@ -177,7 +198,7 @@ public class SignupModule {
 		
 		
 		
-		inboard.getBox(front).setForm(form1);
+		inboard.getBox(front).setForm(validationForm);
 	}
 	
 	

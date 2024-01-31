@@ -1,4 +1,4 @@
-package com.s8.pkgs.people;
+package com.s8.pkgs.people.process;
 
 import com.s8.api.flow.S8AsyncFlow;
 import com.s8.api.flow.S8User;
@@ -6,19 +6,30 @@ import com.s8.api.flow.table.objects.RowS8Object;
 import com.s8.api.flow.table.requests.GetRowS8Request;
 import com.s8.api.web.S8WebFront;
 import com.s8.api.web.functions.arrays.StringUTF8ArrayNeFunction;
+import com.s8.pkgs.people.Inboard;
+import com.s8.pkgs.people.InboardMessage;
 import com.s8.pkgs.people.InboardMessage.Mode;
+import com.s8.pkgs.people.forms.LogInForm;
 
-public class LoginModule {
+
+/**
+ * 
+ */
+public class LoginManager {
 	
+	
+	/** inboard */
 	public final Inboard inboard;
 	
+	
+	/** form0 */
 	private LogInForm form0;
 
 	
 	/**
 	 * 
 	 */
-	public LoginModule(Inboard inboard) {
+	public LoginManager(Inboard inboard) {
 		super();
 		this.inboard = inboard;
 	}

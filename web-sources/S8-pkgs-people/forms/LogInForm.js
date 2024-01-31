@@ -1,8 +1,7 @@
 
-import { InboardBox } from './InboardBox.js';
+import { InboardBox } from '/S8-pkgs-people/InboardBox.js';
 import { NeObject } from '/S8-core-bohr-neon/NeObject.js';
 import { InboardField } from '/S8-pkgs-people/InboardField.js';
-import { InboardMessage } from '/S8-pkgs-people/InboardMessage.js';
 import { InboardMessageSlot } from '/S8-pkgs-people/InboardMessageSlot.js';
 
 import { S8WebFront } from "/S8-pkgs-ui-carbide/S8WebFront.js";

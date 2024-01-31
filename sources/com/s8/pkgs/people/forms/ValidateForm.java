@@ -1,8 +1,10 @@
-package com.s8.pkgs.people;
+package com.s8.pkgs.people.forms;
 
 import com.s8.api.web.S8WebFront;
 import com.s8.api.web.functions.none.VoidNeFunction;
 import com.s8.api.web.functions.primitives.StringUTF8NeFunction;
+import com.s8.pkgs.people.InboardMessage;
+import com.s8.pkgs.people.WebSources;
 
 
 /**
@@ -15,7 +17,7 @@ public class ValidateForm extends Form {
 	 * @param session
 	 */
 	public ValidateForm(S8WebFront front) {
-		super(front, WebSources.ROOT_PATH + "/ValidateForm");
+		super(front, "/ValidateForm");
 	}
 	
 	
