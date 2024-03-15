@@ -1,14 +1,14 @@
 package com.s8.pkgs.people;
 
 import com.s8.api.web.S8WebFront;
-import com.s8.api.web.S8WebFrontObject;
+import com.s8.api.web.S8WebObject;
 import com.s8.pkgs.people.forms.Form;
 
 
 /**
  * Inboard box
  */
-public class InboardBox extends S8WebFrontObject {
+public class InboardBox extends S8WebObject {
 
 	/**
 	 * 

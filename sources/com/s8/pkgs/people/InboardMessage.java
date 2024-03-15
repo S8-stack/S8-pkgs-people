@@ -1,13 +1,13 @@
 package com.s8.pkgs.people;
 
 import com.s8.api.web.S8WebFront;
-import com.s8.api.web.S8WebFrontObject;
+import com.s8.api.web.S8WebObject;
 
 
 /**
  * 
  */
-public class InboardMessage extends S8WebFrontObject {
+public class InboardMessage extends S8WebObject {
 
 	public enum Mode {
 		VALIDATE(2), WARNING(3), ERROR(4);
