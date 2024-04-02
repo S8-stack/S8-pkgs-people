@@ -1,0 +1,23 @@
+
+
+.p8menu-icon {
+    height: 32px;
+    width: 32px;
+    background-size: contain;
+    padding: 0px;
+    margin: 0px 16px 0px 16px;
+    cursor: pointer;
+}
+
+.p8menu-icon > svg {
+    fill: black;
+}
+
+
+.p8menu-icon:hover {
+    filter: drop-shadow(0px 0px 2px rgb(186, 192, 255));
+}
+
+.p8menu-icon:hover > svg{
+    fill: rgb(9, 124, 22);
+}
