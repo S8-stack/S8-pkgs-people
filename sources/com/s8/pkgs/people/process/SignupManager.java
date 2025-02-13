@@ -3,7 +3,7 @@ package com.s8.pkgs.people.process;
 import java.io.IOException;
 
 import com.s8.api.flow.S8AsyncFlow;
-import com.s8.api.flow.mail.S8Mail;
+import com.s8.api.flow.mail.S8MailBuilder;
 import com.s8.api.flow.mail.SendMailS8Request;
 import com.s8.api.flow.table.objects.RowS8Object;
 import com.s8.api.flow.table.requests.GetRowS8Request;
@@ -151,7 +151,7 @@ public class SignupManager {
 		validationCode = Long.toHexString(System.nanoTime() & 0xffffffffL);
 		
 		f4.sendEMail(new SendMailS8Request(true) {
-			public @Override void compose(S8Mail mail) throws IOException {
+			public @Override void compose(S8MailBuilder mail) throws IOException {
 				mail.setRecipient(username);
 				
 				mail.setSubject("Sign-Up email confirmation");
